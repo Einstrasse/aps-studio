@@ -3,28 +3,35 @@ import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 import React from 'react';
 
-const defaultCode = '#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n\tputs("Hello world");\n\treturn 0;\n}';
+const defaultCode = {
+    'cpp': '#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n\tputs("Hello world");\n\treturn 0;\n}',
+    'text': ''
+};
 
 class CodeEditor extends React.Component {
     constructor(props) {
         super(props);
         //For debug usage
-        window.CodeEditor = this;
+        if (this.props.varname) {
+            window[this.props.varname] = this;
+        }
         this.state = {
-            code: defaultCode
+            code: defaultCode[this.props.mode],
         }
     }
+
     renderCodeMirror() {
+        
         return (
             <CodeMirror
                 value={this.state.code}
                 options={{
                     theme: 'monokai',
                     keyMap: 'sublime',
-                    mode: 'cpp'
+                    mode: this.props.mode
                 }}
-                height="100vh"
-                width="100vw"
+                height="100%"
+                width="100%"
                 onChange={(editor) => {
                     const newCode = editor.getValue();
                     this.updateCode(newCode);

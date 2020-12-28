@@ -6,10 +6,15 @@ import Toolbar from './Toolbar';
 function App() {
   return (
     <div className="App">
-      <div className="VerticalBox">
+      <div className="VerticalContainer">
         <Toolbar />
-        <CodeEditor />
-        <div className="footer"></div>
+        <div className="CodePanel">
+          <CodeEditor varname="CodeEditor" mode="cpp" />
+        </div>
+        <hr />
+        <div className="footer">
+          <CodeEditor varname="InputEditor" mode="txt" />
+        </div>
       </div>
     </div>
   );

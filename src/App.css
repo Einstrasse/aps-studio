@@ -1,8 +1,10 @@
+/*
 .App {
   height: 100vh;
+  overflow: hidden;
 }
 
-.VerticalBox {
+.VerticalContainer {
   display: flex;
   flex-flow: column;
   height: 100%;
@@ -10,11 +12,34 @@
 .Tool-Bar {
   flex: 0 1 30px;
 }
-.Code-Editor {
+.CodePanel {
   flex: 1 1 auto;
+}
+.Code-Editor {
   overflow: hidden;
+  height: 100%;
 }
 
 .footer {
   flex: 0 1 150px;
+}
+*/
+.App {
+  height: 100vh;
+  overflow: hidden;
+}
+.CodePanel .Code-Editor {
+  height: 570px;
+}
+.Code-Editor {
+  overflow: hidden;
+}
+.Tool-Bar {
+  height: 30px;
+}
+.footer {
+  height: 170px;
+}
+.footer .Code-Editor {
+  height: 165px;
 }
