@@ -9,7 +9,7 @@ class CodeEditor extends React.Component {
     constructor(props) {
         super(props);
         //For debug usage
-        window.codeEditor = this;
+        window.CodeEditor = this;
         this.state = {
             code: defaultCode
         }

@@ -5,7 +5,8 @@ const path = require("path");
 const Menu = electron.Menu;
 const isDev = require("electron-is-dev");
 const isMac = process.platform === 'darwin'
-const menuTemplate = [
+let mainWindow;
+let menuTemplate = [
     {
         label: "File",
         submenu: [
@@ -17,6 +18,23 @@ const menuTemplate = [
             },
             {
                 role: isMac ? "close" : "quit"
+            }
+        ]
+    },
+    // {
+    //     label: "Templates",
+    //     submenu: [
+    //         label
+    //     ]
+    // },
+    {
+        label: "Test",
+        submenu: [
+            {
+                label: "Tempalte code 1",
+                click: async() => {
+                    mainWindow.webContents.executeJavaScript('window.CodeEditor.updateCode("Template code 1");');
+                }
             }
         ]
     },
@@ -33,7 +51,7 @@ const menuTemplate = [
     }
   ]
 Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
-let mainWindow;
+
 
 function createWindow() {
     mainWindow = new BrowserWindow({ width: 900, height: 680 });
