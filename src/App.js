@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import Button from './button';
+import Button from './Button';
+import CodeMirror from './CodeMirror';
 
 function App() {
   return (
     <div className="App">
-      <Button name="save" /><Button name="load" />
+      <CodeMirror />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
