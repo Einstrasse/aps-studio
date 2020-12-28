@@ -99,7 +99,7 @@ Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 })();
 
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 900, height: 680 });
+    mainWindow = new BrowserWindow({ width: 900, height: 800 });
     mainWindow.loadURL(
     isDev
     ? "http://localhost:3000"

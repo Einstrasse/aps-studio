@@ -13,3 +13,4 @@ $ yarn && yarn start
 * https://medium.com/@devesu/how-to-build-a-react-based-electron-app-d0f27413f17f
 * https://stackoverflow.com/questions/57024486/react-get-codemirror-value-onclick
 * https://uiwjs.github.io/react-codemirror/
+* https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space
