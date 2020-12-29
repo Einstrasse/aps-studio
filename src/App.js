@@ -6,32 +6,31 @@ import { Resize, ResizeVertical, ResizeHorizon } from "react-resize-layout";
 function App() {
   return (
     <div className="App">
-      <div className="VerticalContainer">
-        <Toolbar />
-        <hr />
-        <Resize handleWidth="3px" handleColor="#30f">
-          <ResizeVertical height="100%" className="resizable-code-panel">
+      <Resize handleWidth="3px" handleColor="#30f">
+        <ResizeVertical height="20px" minHeight="20px">
+          <Toolbar />
+          <hr />
+        </ResizeVertical>
+        <ResizeVertical height="100%" className="resizable-code-panel">
+        <Resize handleColor="red" handleWidht="8px">
+          <ResizeHorizon width="400px">
             <div className="CodePanel panel">
               <CodeEditor varname="CodeEditor" mode="cpp" />
             </div>  
-          </ResizeVertical>
-          <ResizeVertical minHeight="150px" className="resizable-input-panel">
-            <div className="inputPanel panel">
+          </ResizeHorizon>
+          <ResizeHorizon minWidth="100px">
+          <div className="CodePanel panel">
               <CodeEditor varname="InputEditor" mode="txt" />
-            </div>
-          </ResizeVertical>
+            </div>  
+          </ResizeHorizon>
         </Resize>
-      </div>
-      {/* <div className="VerticalContainer">
-        <Toolbar />
-        <div className="CodePanel">
-          <CodeEditor varname="CodeEditor" mode="cpp" />
-        </div>
-        <hr />
-        <div className="footer">
-          <CodeEditor varname="InputEditor" mode="txt" />
-        </div>
-      </div> */}
+        </ResizeVertical>
+        <ResizeVertical minHeight="150px" className="resizable-input-panel">
+          <div className="inputPanel panel">
+            <CodeEditor varname="LogView" mode="txt" />
+          </div>
+        </ResizeVertical>
+      </Resize>
     </div>
   );
 }

@@ -45,6 +45,7 @@
   height: 165px;
 }
 */
+/*
 .VerticalContainer {
   display: flex;
   flex-flow: column;
@@ -55,25 +56,24 @@
   flex: 0 1 30px;
 }
 
-.App {
-  height: 100vh;
-  overflow: hidden;
-}
-
-.resize {
-  position: relative !important;
-  flex: 1 1 auto;
-}
-.panel {
-  height: 100%;
-}
 .resizable-code-panel {
   margin-bottom: 5px;
 }
 .resizable-input-panel {
   margin-top: 5px;
 }
+*/
+.App {
+  height: 100vh;
+  overflow: hidden;
+}
 .Code-Editor {
   height: 100%;
   overflow: hidden;
+}
+.Tool-Bar {
+  height: 100%;
+}
+.panel {
+  height: 100%;
 }
