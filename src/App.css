@@ -1,79 +1,78 @@
-/*
-.App {
-  height: 100vh;
+.grid-box {
+  border: solid gray 2px;
   overflow: hidden;
-}
-
-.VerticalContainer {
+  border-radius: 5px;
   display: flex;
   flex-flow: column;
   height: 100%;
 }
-.Tool-Bar {
-  flex: 0 1 30px;
+.grid-label {
+  flex: 0 1 20px;
+  margin: 7px 7px 0 7px;
 }
-.CodePanel {
+.Code-Editor {
   flex: 1 1 auto;
-}
-.Code-Editor {
   overflow: hidden;
-  height: 100%;
+  margin: 0 7px 7px 7px;
+}
+.react-grid-layout {
+  position: relative;
+  transition: height 200ms ease;
+}
+.react-grid-item {
+  transition: all 200ms ease;
+  transition-property: left, top;
+}
+.react-grid-item.cssTransforms {
+  transition-property: transform;
+}
+.react-grid-item.resizing {
+  z-index: 1;
+  will-change: width, height;
 }
 
-.footer {
-  flex: 0 1 150px;
-}
-*/
-/*
-.App {
-  height: 100vh;
-  overflow: hidden;
-}
-.CodePanel .Code-Editor {
-  height: 570px;
-}
-.Code-Editor {
-  overflow: hidden;
-}
-.Tool-Bar {
-  height: 30px;
-}
-.footer {
-  height: 170px;
-}
-.footer .Code-Editor {
-  height: 165px;
-}
-*/
-/*
-.VerticalContainer {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 3;
+  will-change: transform;
 }
 
-.Tool-Bar {
-  flex: 0 1 30px;
+.react-grid-item.dropping {
+  visibility: hidden;
 }
 
-.resizable-code-panel {
-  margin-bottom: 5px;
+.react-grid-item.react-grid-placeholder {
+  background: red;
+  opacity: 0.2;
+  transition-duration: 100ms;
+  z-index: 2;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
-.resizable-input-panel {
-  margin-top: 5px;
+
+.react-grid-item > .react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
 }
-*/
-.App {
-  height: 100vh;
-  overflow: hidden;
+
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  border-right: 2px solid rgba(219, 158, 24, 0.897);
+  border-bottom: 2px solid rgba(219, 158, 24, 0.897);
 }
-.Code-Editor {
-  height: 100%;
-  overflow: hidden;
-}
-.Tool-Bar {
-  height: 100%;
-}
-.panel {
-  height: 100%;
+
+.react-resizable-hide > .react-resizable-handle {
+  display: none;
 }
