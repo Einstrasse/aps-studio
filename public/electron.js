@@ -23,46 +23,47 @@ function execJsCode(jscode) {
 function writeText(varname, data) {
     let encoded = Buffer.from(data).toString('base64');
     let jscode = `window.${varname}.updateCode(atob("${encoded}"));`;
-    //mainWindow.webContents.executeJavaScript(jscode);
+    execJsCode(jscode);
+}
+function appendText(varname, data) {
+    let encoded = Buffer.from(data).toString('base64');
+    let jscode = `window.${varname}.appendCode(atob("${encoded}"));`;
     execJsCode(jscode);
 }
 async function readText(varname) {
-    //returns promise object
     let jscode = `window.${varname}.getCode()`
     let ret = await execJsCode(jscode);
     return ret;
-    // return await mainWindow.webContents.executeJavaScript(jscode);
 }
 function buildAndRun(code, input) {
     const code_file = path.join(os.tmpdir(), "code.cpp")
-    const out_file = path.join(os.tmpdir(), "code.out")
+    const exe_file = path.join(os.tmpdir(), "code.out")
     const input_file = path.join(os.tmpdir(), "input.txt")
     fs.writeFileSync(code_file, code);
     fs.writeFileSync(input_file, input);
-    console.log(process.platform)
-    console.log(code_file)
-    exec(`g++ ${code_file} -o ${out_file} -std=c++11 -Wall`, (error, stdout, stderr) => {
+    console.log(process.platform) // 'linux'
+    exec(`g++ ${code_file} -o ${exe_file} -std=c++11 -Wall`, (error, stdout, stderr) => {
         if (error) {
             console.log(error);
-            writeText('LogView', stderr);
+            appendText('LogView', stderr);
             return;
         }
-        console.log('stdout', stdout);
-        console.log('stderr', stderr);
-        writeText('LogView', [stdout, stderr].join('\n'));
-        execFile(out_file, ` < ${input_file}`.split(' '), (error, stdout, stderr) => {
+        console.log('compilation stdout', stdout);
+        console.log('compilation stderr', stderr);
+        appendText('LogView', [stderr, stdout].filter(Boolean).join('\n'));
+        exec(`${exe_file} < ${input_file}`, {
+            timeout: 5
+        }, (error, stdout, stderr) => {
             if (error) {
                 console.log(error);
-                writeText('LogView', stderr);
+                appendText('LogView', stderr);
                 return;
             }
-            console.log('stdout', stdout);
-            console.log('stderr', stderr);
-            writeText('LogView', [stdout, stderr].join('\n'));
+            console.log('exec stdout', stdout);
+            console.log('exec stderr', stderr);
+            writeText('LogView', [stderr, stdout, "---- Process ended ----"].filter(Boolean).join('\n'));
         })
-        
     });
-
 }
 
 
@@ -81,8 +82,10 @@ function buildAndRun(code, input) {
     let files = fs.readdirSync(path.join(__dirname, "templates"));
     files.forEach(file_name => {
         let file_data = fs.readFileSync(path.join(__dirname, "templates", file_name));
+        let short_cut = `Ctrl+${templates.length + 1}`;
         templates.push({
-            label: file_name,
+            label: `${file_name} (${short_cut})`,
+            accelerator: short_cut,
             click: () => {
                 writeText('CodeEditor', file_data);
             }

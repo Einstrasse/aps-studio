@@ -51,6 +51,11 @@ class CodeEditor extends React.Component {
             code: newCode
         })
     }
+    appendCode(newCode) {
+        this.setState({
+            code: this.state.code + '\n' + newCode
+        })
+    }
     getCode() {
         return this.state.code;
     }
