@@ -7,6 +7,23 @@ electron based gui app for algorithm problem solver
 $ yarn && yarn start
 ```
 
+# Features
+
+## Developed features
+* Code edit
+* Template code support
+* Build and run with input file
+* Available in only Linux
+* Draggable, Resizable UI
+
+## Developing features
+* Comfortable UI like visual studio
+* Support Windows or Mac OS
+* Runtime debugging
+* Multiple input file support
+* Save codes
+* Direct upload code to github
+
 
 # References
 * https://www.electronjs.org/

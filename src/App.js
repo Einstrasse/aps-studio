@@ -9,18 +9,18 @@ function App() {
       i: "Toolbar", x:0, y:0, w: 12, h: 1, static: true
     },
     {
-      i: "CodePanel", x:0, y:1, w:6, h:12
+      i: "CodePanel", x:0, y:1, w:8, h:15
     }, 
     {
-      i: "InputPanel", x:6, y:1, w:6, h:12
+      i: "InputPanel", x:8, y:1, w:4, h:15
     }, 
     {
-      i: "LogPanel", x:0, y:3, w:12, h:7
+      i: "LogPanel", x:0, y:3, w:12, h:10
     }, 
   ]
   return (
     <div className="App">
-      <GridLayout className="layout" layout={layout} cols={12} rowHeight={25} width={900} height={800} isBounded={true}>
+      <GridLayout className="layout" layout={layout} cols={12} rowHeight={20} width={900} height={800} isBounded={true}>
         <div key="Toolbar" className="grid-box">
           <Toolbar />
           <hr />
