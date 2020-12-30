@@ -17,6 +17,7 @@ class CodeEditor extends React.Component {
         }
         this.state = {
             code: defaultCode[this.props.mode],
+            breakPoints: {}
         }
     }
 
@@ -35,6 +36,29 @@ class CodeEditor extends React.Component {
                 onChange={(editor) => {
                     const newCode = editor.getValue();
                     this.updateCode(newCode);
+                }}
+                onGutterClick={(editor, line, gutter)=>{
+                    console.log("CodeEditor - onGutterClick - ", line, gutter)
+                    if (this.state.breakPoints[line] === true) {
+                        editor.setGutterMarker(line, gutter, null);
+                        //delete break point
+                        let nextBreakPoints = Object.assign({}, this.state.breakPoints);
+                        delete nextBreakPoints[line];
+                        this.setState({
+                            breakPoints: nextBreakPoints
+                        })
+                        console.log("1", this.state.breakPoints)
+                    } else {
+                        //TODO: replace dummy break point ui(button tag)
+                        editor.setGutterMarker(line, gutter, document.createElement("button"));
+                        //make break point
+                        let nextBreakPoints = Object.assign({}, this.state.breakPoints);
+                        nextBreakPoints[line] = true;
+                        this.setState({
+                            breakPoints: nextBreakPoints
+                        })
+                        console.log("2", this.state.breakPoints)
+                    }
                 }}
             />
         )
