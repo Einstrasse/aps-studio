@@ -18,7 +18,7 @@ class CodeEditor extends React.Component {
         }
         
         this.state = {
-            code: defaultCode[this.props.mode],
+            code: defaultCode[this.props.mode] || '',
             breakPoints: {}
         }
     }
@@ -82,7 +82,7 @@ class CodeEditor extends React.Component {
     }
     appendCode(newCode) {
         this.setState({
-            code: this.state.code + '\n' + newCode
+            code: [this.state.code, newCode].filter(Boolean).join('\n')
         })
     }
     getCode() {

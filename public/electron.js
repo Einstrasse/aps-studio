@@ -8,7 +8,9 @@ const isDev = require("electron-is-dev");
 const { MenuItem } = require("electron");
 const os = require('os');
 const { exec, execFile } = require('child_process');
+const { traceProcessWarnings } = require("process");
 const isMac = process.platform === 'darwin'
+const async = require('async');
 let mainWindow;
 function execJsCode(jscode) {
     let ret;
@@ -39,12 +41,16 @@ async function readText(varname) {
     let ret = await execJsCode(jscode);
     return ret;
 }
-function buildAndRun(code, input) {
+async function getInputNames() {
+    let jscode = `window.App.getInputNames()`
+    let ret = await execJsCode(jscode);
+    return ret;
+}
+function buildAndRun(code, inputs) {
     const code_file = path.join(os.tmpdir(), "code.cpp")
     const exe_file = path.join(os.tmpdir(), "code.out")
-    const input_file = path.join(os.tmpdir(), "input.txt")
+    
     fs.writeFileSync(code_file, code);
-    fs.writeFileSync(input_file, input);
     console.log(process.platform) // 'linux'
     exec(`g++ ${code_file} -o ${exe_file} -std=c++11 -Wall`, (error, stdout, stderr) => {
         if (error) {
@@ -52,21 +58,32 @@ function buildAndRun(code, input) {
             appendText('LogView', stderr);
             return;
         }
-        console.log('compilation stdout', stdout);
-        console.log('compilation stderr', stderr);
-        appendText('LogView', [stderr, stdout].filter(Boolean).join('\n'));
-        exec(`${exe_file} < ${input_file}`, {
-            timeout: 5
-        }, (error, stdout, stderr) => {
-            if (error) {
-                console.log(error);
-                appendText('LogView', stderr);
-                return;
-            }
-            console.log('exec stdout', stdout);
-            console.log('exec stderr', stderr);
-            writeText('LogView', [stderr, stdout, "---- Process ended ----"].filter(Boolean).join('\n'));
-        })
+        async.mapLimit(inputs, 1, (item, callback) => {
+            let fname = item.fname;
+            let tc = item.tc;
+            const input_file = path.join(os.tmpdir(), fname)
+            fs.writeFileSync(input_file, tc);
+            console.log('compilation stdout', stdout);
+            console.log('compilation stderr', stderr);
+            appendText('LogView', [stderr, stdout, `---- Test Case : ${fname} ----`].filter(Boolean).join('\n'));
+            exec(`${exe_file} < ${input_file}`, {
+                timeout: 5
+            }, (error, stdout, stderr) => {
+                if (error) {
+                    console.log(error);
+                    appendText('LogView', stderr);
+                    console.log("2.5", stderr);
+                    return;
+                }
+                console.log('exec stdout', stdout);
+                console.log('exec stderr', stderr);
+                appendText('LogView', [stderr, stdout].filter(Boolean).join('\n'));
+                callback(null);
+            })
+        }, (err, res) => {
+            appendText('LogView', '------- All Test cases ended -------\n');
+        });
+        
     });
 }
 
@@ -124,9 +141,19 @@ function buildAndRun(code, input) {
                 accelerator: "Ctrl+F5",
                 click: async() => {
                     console.log("Run with Input!");
-                    var code = await readText("CodeEditor");
-                    var input = await readText("InputEditor");
-                    buildAndRun(code, input);
+                    let code = await readText("CodeEditor");
+                    let var_names = await getInputNames();
+                    let inputs = [];
+                    var_names.map(async(item, index) => {
+                        let fname = `Input_${item}`;
+                        let tc = await readText(fname);
+                        inputs.push({
+                            fname: fname,
+                            tc: tc
+                        })
+                    })
+                    // var input = await readText("InputEditor");
+                    buildAndRun(code, inputs);
                 }
             }
         ]
