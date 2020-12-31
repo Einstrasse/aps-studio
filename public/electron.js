@@ -20,6 +20,10 @@ function execJsCode(jscode) {
     }
     return ret;
 }
+function setTestCaseNum(num) {
+    let jscode = `window.App.setNumInputs(${num})`;
+    execJsCode(jscode);
+}
 function writeText(varname, data) {
     let encoded = Buffer.from(data).toString('base64');
     let jscode = `window.${varname}.updateCode(atob("${encoded}"));`;
@@ -84,7 +88,7 @@ function buildAndRun(code, input) {
         let file_data = fs.readFileSync(path.join(__dirname, "templates", file_name));
         let short_cut = `Ctrl+${templates.length + 1}`;
         templates.push({
-            label: `${file_name} (${short_cut})`,
+            label: file_name,
             accelerator: short_cut,
             click: () => {
                 writeText('CodeEditor', file_data);
@@ -96,8 +100,23 @@ function buildAndRun(code, input) {
         label: "Templates",
         submenu: templates
     }))
+    let setTC = [];
+    for (let i=1; i <=5; i++) {
+        setTC.push({
+            label: `${i} ${i > 1 ? 'Cases' : 'Case'}`,
+            accelerator: `Alt+${i}`,
+            click: () => {
+                setTestCaseNum(i);
+            }
+        })
+    }
     menu.append(new MenuItem({
         id: '3',
+        label: "Testcases",
+        submenu: setTC
+    }))
+    menu.append(new MenuItem({
+        id: '4',
         label: "Build",
         submenu: [
             {
@@ -113,7 +132,7 @@ function buildAndRun(code, input) {
         ]
     }))
     menu.append(new MenuItem({ 
-        id: '4',
+        id: '5',
         role: "help",
         submenu: [
             {

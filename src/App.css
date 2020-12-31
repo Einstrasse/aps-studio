@@ -10,6 +10,21 @@
   flex: 0 1 20px;
   margin: 7px 7px 0 7px;
 }
+.grid-contents {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column;
+  overflow: hidden;
+}
+.react-tabs__tab-list {
+  padding-left: 7px !important;
+}
+.react-tabs__tab-panel--selected {
+  flex: 1 1 auto;
+  display: flex !important;
+  flex-flow: column;
+  overflow: hidden;
+}
 .Code-Editor {
   flex: 1 1 auto;
   overflow: hidden;

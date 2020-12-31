@@ -14,7 +14,9 @@ class CodeEditor extends React.Component {
         //For debug usage
         if (this.props.varname) {
             window[this.props.varname] = this;
+            console.log("OncCreate", this.props.varname);
         }
+        
         this.state = {
             code: defaultCode[this.props.mode],
             breakPoints: {}
@@ -37,7 +39,10 @@ class CodeEditor extends React.Component {
                     const newCode = editor.getValue();
                     this.updateCode(newCode);
                 }}
-                onGutterClick={(editor, line, gutter)=>{
+                onFocus={this.props.refresh ? (editor)=>{
+                    editor.refresh();
+                } : (editor)=> {}}
+                onGutterClick={this.props.breakpoints ? (editor, line, gutter)=>{
                     console.log("CodeEditor - onGutterClick - ", line, gutter)
                     if (this.state.breakPoints[line] === true) {
                         editor.setGutterMarker(line, gutter, null);
@@ -59,7 +64,7 @@ class CodeEditor extends React.Component {
                         })
                         console.log("2", this.state.breakPoints)
                     }
-                }}
+                } : (editor, line, gutter) => {}}
             />
         )
     }
