@@ -11,6 +11,7 @@ const { exec, execFile } = require('child_process');
 const { traceProcessWarnings } = require("process");
 const isMac = process.platform === 'darwin'
 const async = require('async');
+const cygwinPath = "C:\\cygwin64\\bin\\";
 let mainWindow;
 function execJsCode(jscode) {
     let ret;
@@ -51,10 +52,15 @@ function buildAndRun(code, inputs) {
     const exe_file = path.join(os.tmpdir(), "code.out")
     
     fs.writeFileSync(code_file, code);
-    console.log(process.platform) // 'linux'
-    exec(`g++ ${code_file} -o ${exe_file} -std=c++11 -Wall`, (error, stdout, stderr) => {
+
+    exec(`g++ ${code_file} -o ${exe_file} -std=c++11 -Wall`, {
+        cwd: os.tmpdir(),
+        env: {
+            Path: cygwinPath
+        }
+    }, (error, stdout, stderr) => {
         if (error) {
-            console.log(error);
+            console.log("Error on compilation", error);
             appendText('LogView', stderr);
             return;
         }
@@ -67,10 +73,13 @@ function buildAndRun(code, inputs) {
             console.log('compilation stderr', stderr);
             appendText('LogView', [stderr, stdout, `---- Test Case : ${fname} ----`].filter(Boolean).join('\n'));
             exec(`${exe_file} < ${input_file}`, {
-                timeout: 5
+                env: {
+                    Path: cygwinPath
+                },
+                timeout: 5000
             }, (error, stdout, stderr) => {
                 if (error) {
-                    console.log(error);
+                    console.log("Error on Exec!", error);
                     appendText('LogView', stderr);
                     console.log("2.5", stderr);
                     return;
@@ -175,7 +184,11 @@ function buildAndRun(code, inputs) {
 })();
 
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 900, height: 800 });
+    if (/win/.test(process.platform)) {
+        mainWindow = new BrowserWindow({ width: 900 + 16, height: 800 + 59});
+    } else {
+        mainWindow = new BrowserWindow({ width: 900, height: 800 });
+    }
     mainWindow.loadURL(
     isDev
     ? "http://localhost:3000"
