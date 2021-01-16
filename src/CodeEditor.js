@@ -4,7 +4,7 @@ import 'codemirror/theme/monokai.css';
 import React from 'react';
 
 const defaultCode = {
-    'cpp': '#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n\tputs("Hello world");\n\treturn 0;\n}',
+    'cpp': '#include <iostream>\nusing namespace std;\nint main() {\n\tputs("Hello world");\n\treturn 0;\n}',
     'text': ''
 };
 

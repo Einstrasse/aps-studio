@@ -51,7 +51,7 @@ function buildAndRun(code, inputs) {
     const exe_file = path.join(os.tmpdir(), "code.out")
     
     fs.writeFileSync(code_file, code);
-    console.log(process.platform) // 'linux'
+    console.log(process.platform) // 'linux' or 'darwin'
     exec(`g++ ${code_file} -o ${exe_file} -std=c++11 -Wall`, (error, stdout, stderr) => {
         if (error) {
             console.log(error);
@@ -67,7 +67,7 @@ function buildAndRun(code, inputs) {
             console.log('compilation stderr', stderr);
             appendText('LogView', [stderr, stdout, `---- Test Case : ${fname} ----`].filter(Boolean).join('\n'));
             exec(`${exe_file} < ${input_file}`, {
-                timeout: 5
+                timeout: 5000
             }, (error, stdout, stderr) => {
                 if (error) {
                     console.log(error);
@@ -100,9 +100,9 @@ function buildAndRun(code, inputs) {
         ]
     }))
     let templates = []
-    let files = fs.readdirSync(path.join(__dirname, "templates"));
+    let files = fs.readdirSync(path.join(__dirname, isMac ? "templates/darwin" : "templates"));
     files.forEach(file_name => {
-        let file_data = fs.readFileSync(path.join(__dirname, "templates", file_name));
+        let file_data = fs.readFileSync(path.join(__dirname, isMac ? "templates/darwin" : "templates", file_name));
         let short_cut = `Ctrl+${templates.length + 1}`;
         templates.push({
             label: file_name,

@@ -3,8 +3,8 @@ import Button from './Button';
 function Toolbar() {
     return (
         <div className="Tool-Bar">
-            <Button name="Run" />
-            <Button name="Debug" />
+            {/* <Button name="Run" />
+            <Button name="Debug" /> */}
         </div>
     )
 }
