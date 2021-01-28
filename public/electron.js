@@ -114,6 +114,19 @@ function buildAndRun(code, inputs) {
     })
     menu.append(new MenuItem({
         id: '2',
+        label: 'Edit',
+        submenu: [
+            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+            { type: "separator" },
+            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+        ]
+    }))
+    menu.append(new MenuItem({
+        id: '3',
         label: "Templates",
         submenu: templates
     }))
@@ -128,12 +141,12 @@ function buildAndRun(code, inputs) {
         })
     }
     menu.append(new MenuItem({
-        id: '3',
+        id: '4',
         label: "Testcases",
         submenu: setTC
     }))
     menu.append(new MenuItem({
-        id: '4',
+        id: '5',
         label: "Build",
         submenu: [
             {

@@ -1,6 +1,8 @@
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/edit/matchbrackets';
 import React from 'react';
 
 const defaultCode = {
@@ -35,6 +37,9 @@ class CodeEditor extends React.Component {
                 }}
                 height="100%"
                 width="100%"
+                onCopy={(editor) => {
+                    console.log("Copy event!");
+                }}
                 onChange={(editor) => {
                     const newCode = editor.getValue();
                     this.updateCode(newCode);
